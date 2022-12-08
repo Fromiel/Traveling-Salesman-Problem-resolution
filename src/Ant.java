@@ -2,19 +2,22 @@ import java.util.Vector;
 
 public class Ant {
 
-    private long currentArcSize;
-    private long currentArcPos;
-    private int currentOrigin;
-    private int currentDestination;
+    private long currentArcSize; // Taille du chemin actuel de la fourmi
+    private long currentArcPos; // Position sur l'arc actuel
+    private int currentOrigin; // Origin de l'arc
+    private int currentDestination; // Destination de l'arc
 
-    private Problem problem;
+    private Problem problem; //Données du probleme
 
+    // Methode retournant la prochaine destination de la fourmi
+    // Throw AntException si la fourmi est sur une impasse
     private void findNextSearchDestination() throws AntException {
         switch(state) {
             // si la fourmi vient d'être créée
             case Nothing:
             {
-                visitedCities.add(0);
+                visitedCities.add(0); //Elle est créée sur la ville 0
+                //On enlève 0 des villes à visiter
                 for (int tmp : citiesStillToVisit) {
                     if (tmp == 0) {
                         citiesStillToVisit.removeElement(tmp);
@@ -22,8 +25,8 @@ public class Ant {
                     }
                 }
 
-                int dest = getNearCity(0);
-                state = StateEnum.SearchingPath;
+                int dest = getNearCity(0); //On cherche la prochaine ville en partant de 0
+                state = StateEnum.SearchingPath; //On change l'état de la fourmi
                 currentOrigin = 0;
                 currentDestination = dest;
                 currentArcPos = 0;
@@ -35,9 +38,10 @@ public class Ant {
             case SearchingPath:
             {
                 // on a atteint currentDestination
-                //tmpVisitedLength += problem.distances[currentOrigin][currentDestination];
+                //tmpVisitedLength += problem.distances[currentOrigin][currentDestination]; //On ajoute la longueur de l'arc à la longueur actuelle du chemin
                 visitedCities.add(currentDestination);
 
+                //On enleve currentDestination aux villes encore à visiter
                 for (int tmp : citiesStillToVisit) {
                     if (tmp == currentDestination){
                         citiesStillToVisit.removeElement(tmp);
@@ -45,11 +49,13 @@ public class Ant {
                     }
                 }
 
+                //Si on a visité toutes les villes
                 if (citiesStillToVisit.size() == 0){
                     // plus rien à visiter, le chemin est complet
                     // on revient vers le nid
-                    tmpVisitedLength += problem.distances[currentDestination][0];
+                    tmpVisitedLength += problem.distances[currentDestination][0]; //On ajoute le chemin de retour à la longueur
 
+                    //On va repasser par toutes les villes parcourues pour poser des pheromones
                     state = StateEnum.Returning;
                     currentOrigin =  visitedCities.size()-1;
                     currentDestination = visitedCities.size()-2;
@@ -83,7 +89,7 @@ public class Ant {
                 // mettre des phéromones sur l'arc parcouru
                 problem.setPheromones(visitedCities.get(currentOrigin), visitedCities.get(currentDestination), tmpVisitedLength);
                 currentOrigin = currentDestination;
-                currentDestination = currentOrigin-1;
+                currentDestination --;
                 currentArcSize = problem.distances[visitedCities.get(currentOrigin)][visitedCities.get(currentDestination)];
                 currentArcPos = currentArcSize;
 
@@ -92,16 +98,20 @@ public class Ant {
         }
     }
 
+    //Methode qui retourne la ville que la fourmi va visiter ensuite
+    //from : ville ou se trouve présentement la fourmi
+    //throw AntException si la fourmi est dans une impasse
     private int getNearCity(int from) throws AntException {
         float pheromoneSize = 0;
-        for (int i = 0; i < citiesStillToVisit.size(); i++){
-        if (citiesStillToVisit.get(i) == from)
-            continue;
-        pheromoneSize  += problem.pheromones[from][citiesStillToVisit.get(i)];
+        for (int i = 0; i < citiesStillToVisit.size(); i++)
+        {
+            if (citiesStillToVisit.get(i) == from)
+                continue;
+            pheromoneSize  += problem.pheromones[from][citiesStillToVisit.get(i)];
         }
 
 
-        float found = (float)((int)(Math.random() * pheromoneSize*1000)/1000.0)  ;
+        float found = (float)((int)(Math.random() * pheromoneSize*10)/10.0)  ;
         float tmpPheromones = 0;
         int ii = 0;
         while (ii < citiesStillToVisit.size()){
@@ -138,6 +148,8 @@ public class Ant {
     public int tmpVisitedLength;
 
 
+    //Constructeur de Ant
+    //Initialise la fourmi avec les données du problème et pose la fourmi sur la ville 0
     public Ant(Problem problem)
     {
         tmpVisitedLength = 0;
@@ -154,6 +166,7 @@ public class Ant {
     }
 
 
+    //Methode appelée à chaque itération pour bouger la fourmi
     public void frame() throws AntException {
         switch(state){
             case SearchingPath:

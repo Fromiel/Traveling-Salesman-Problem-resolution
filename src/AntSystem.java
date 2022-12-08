@@ -7,14 +7,15 @@ public class AntSystem
     private Vector<Ant> ants;
     private Problem problem;
 
-    private int bestLength;
-    private Vector<Integer> bestSolution;
+    private int bestLength; //Meilleur solution trouvée
+    private Vector<Integer> bestSolution; //Chemin de la meilleur solution trouvée
 
     private int currentIteration;
 
+    //Méthode appelée lorsqu'une solution est trouvée, si elle est meilleur que la meilleur solution précédente, on remplace la meilleur solution par cette solution
     private void notifySolution(int value, Vector<Integer> cities)
     {
-        if (bestLength == -1){
+        if (bestLength < 0){
             bestLength  = value;
             bestSolution = cities;
         }else{
@@ -27,8 +28,9 @@ public class AntSystem
         }
     }
 
-    public int pathCount;
+    public int pathCount; //Nombre de chemins trouvés
 
+    //Constructeur qui initialise AntSystem avec les données du problème et le nombre de fourmis
     public AntSystem(Problem problem, int nbAnts)
     {
         this.problem = problem;
@@ -37,11 +39,13 @@ public class AntSystem
         for(int i = 0; i < nbAnts; i++)
             ants.add(new Ant(problem));
 
-        bestLength = 999999;
+        bestLength = -1;
         pathCount = 0;
         currentIteration = 0;
     }
 
+    // Méthode appelée pour effectuer la recherche du plus court chemin en fonction du nombre d'itérations passé en argument
+    // n : nombre d'itération
     public void run(int n)
     {
         for (currentIteration=0; currentIteration<n; currentIteration++){
@@ -56,8 +60,13 @@ public class AntSystem
                 if (e.state == AntException.antExceptionEnum.ToRegister)
                     notifySolution(e.ant.tmpVisitedLength, e.ant.visitedCities);
 
-                if(bestLength <= problem.optimalLength)
+                //Si on a trovue le chemin optimal
+                if(bestLength <= problem.optimalLength) {
+                    System.out.println("Solution optimale trouvée en "+currentIteration+" iterations");
+                    System.out.println(bestLength);
+                    System.out.println(bestSolution);
                     return;
+                }
 
 				ants.set(ants.indexOf(ant), new Ant(problem));
                 }
@@ -69,8 +78,11 @@ public class AntSystem
                 problem.evaporate();
 
             //debug
-            if (currentIteration%1000==0)
+            if (currentIteration%1000==0 && currentIteration != 0)
+            {
                 System.out.println(bestLength);
+                System.out.println(bestSolution);
+            }
         }
     }
 }

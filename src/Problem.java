@@ -1,6 +1,7 @@
 
 public class Problem {
 
+    //Constructeur du probleme qui va initialiser les distances entre les villes et hardcoder une solution optimale, et initialiser les pheromones
     public Problem(int nbCities, float borneMin, float borneMax, float evaporation)
     {
         this.nbCities = nbCities;
@@ -17,6 +18,7 @@ public class Problem {
             }
         }
 
+        //creer des distances aleatoires entre les ville
         for (int i = 0; i < nbCities; i++) {
             distances[i][i] = 0;
             for(int j = i + 1; j < nbCities; j++)
@@ -35,6 +37,7 @@ public class Problem {
         optimalLength = nbCities;
     }
 
+    //Methode calculant le taux de pheromone entre deux villes en fonctino de la longueur du chemin
     public void setPheromones(int i, int j, int pathLength)
     {
         /*float newValue = pheromones[i][j] + (1 / (float) pathLength);
@@ -45,7 +48,7 @@ public class Problem {
 
         pheromones[i][j] = newValue;*/
 
-        float ph = 100.f * optimalLength / (pathLength + 1 - optimalLength);
+        float ph = 100.f * optimalLength / (pathLength + 0.01f - optimalLength);
 
         pheromones[i][j] += ph;
 
@@ -53,12 +56,15 @@ public class Problem {
         if (pheromones[i][j] > borneMax) pheromones[i][j] = borneMax;
 
         pheromones[j][i] = pheromones[i][j];
+
     }
 
+    //Methode reduisant la quantite de pheromones sur tous les chemins
     public void evaporate()
     {
-        for (int i=0; i<nbCities; i++)
-            for (int j=0; j<i; j++){
+        for (int i=0; i < nbCities; i++)
+            for (int j=0; j<i; j++)
+            {
                 pheromones[i][j] = pheromones[i][j] * (100-evaporation) / 100;
                 if ((int)pheromones[i][j] < borneMin)
                     pheromones[i][j] = borneMin;
