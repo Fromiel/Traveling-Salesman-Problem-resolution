@@ -6,9 +6,9 @@ public class Main {
         System.out.println("Debut du programme :");
 
         // villes, borne sup, borne inf, coeff d'evaporation en %
-        int nbVilles = 11, nbIterations = 1000000, nbFourmis = 100;
+        int nbVilles = 10, nbIterations = 100000000, nbFourmis = 10;
 
-        Problem p = new Problem(nbVilles, 1, 5000, 0.1f);
+        Problem p = new Problem(nbVilles, 1, 5000, 0.01f, 500, 500);
 
         System.out.println("Problem créé");
 

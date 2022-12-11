@@ -78,7 +78,7 @@ public class AntSystem
                 problem.evaporate();
 
             //debug
-            if (currentIteration%1000==0 && currentIteration != 0)
+            if (currentIteration%100000==0 && currentIteration != 0)
             {
                 System.out.println(bestLength);
                 System.out.println(bestSolution);

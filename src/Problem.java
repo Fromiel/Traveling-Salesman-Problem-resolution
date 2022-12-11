@@ -18,6 +18,8 @@ public class Problem {
             }
         }
 
+
+
         //creer des distances aleatoires entre les ville
         for (int i = 0; i < nbCities; i++) {
             distances[i][i] = 0;
@@ -26,8 +28,6 @@ public class Problem {
                 distances[i][j] = (int) (Math.random() * 100) + 1;
                 distances[j][i] = distances[i][j];
             }
-
-
         }
 
         // solution optimale
@@ -37,18 +37,41 @@ public class Problem {
         optimalLength = nbCities;
     }
 
+
+    //Constructeur de problem pour creer des villes de coordonnees aleatoires
+    public Problem(int nbCities, float borneMin, float borneMax, float evaporation, int windowSizeX, int windowSizeY)
+    {
+        this.nbCities = nbCities;
+        this.borneMin = borneMin;
+        this.borneMax = borneMax;
+        this.evaporation = evaporation;
+        this.distances = new int[nbCities][nbCities];
+        this.pheromones = new float[nbCities][nbCities];
+        this.cities = new City[nbCities];
+
+        for (int i = 0; i < nbCities; i++) {
+            cities[i] = new City(windowSizeX, windowSizeY);
+        }
+
+        for (int i = 0; i < nbCities; i++) {
+            distances[i][i] = 0;
+            for(int j = 0; j < nbCities; j++)
+            {
+                pheromones[i][j] = borneMin;
+                distances[i][j] = cities[i].getDistance(cities[j]);
+                distances[j][i] = distances[i][j];
+            }
+        }
+
+        optimalLength = nbCities; //Ici optimal length servira juste pour la nethode setPheromone
+
+    }
+
     //Methode calculant le taux de pheromone entre deux villes en fonctino de la longueur du chemin
     public void setPheromones(int i, int j, int pathLength)
     {
-        /*float newValue = pheromones[i][j] + (1 / (float) pathLength);
-        if(newValue > borneMax)
-            newValue = borneMax;
-        if(newValue < borneMin)
-            newValue = borneMin;
 
-        pheromones[i][j] = newValue;*/
-
-        float ph = 100.f * optimalLength / (pathLength + 0.01f - optimalLength);
+        float ph = 100.f * optimalLength / (pathLength + 1.0f - optimalLength);
 
         pheromones[i][j] += ph;
 
@@ -73,10 +96,13 @@ public class Problem {
     }
 
     public int nbCities;
+
+    public City[] cities;
     private float borneMax, borneMin;
     private float evaporation;
 
     public int optimalLength;
+
 
     // arcs
     public int distances[][];
