@@ -1,4 +1,4 @@
-
+import java.util.Vector;
 
 public class Main {
     public static void main(String[] args) {
@@ -6,19 +6,24 @@ public class Main {
         System.out.println("Debut du programme :");
 
         // villes, borne sup, borne inf, coeff d'evaporation en %
-        int nbVilles = 10, nbIterations = 100000000, nbFourmis = 10;
+        int nbVilles = 30, nbIterations = 1000000, nbFourmis = 100;
 
-        Problem p = new Problem(nbVilles, 1, 5000, 0.01f, 500, 500);
+        int bestLength = -1; //Meilleur solution trouvée
+        
+        Problem p = new Problem(nbVilles, 1, 5000, 0.1f);
 
         System.out.println("Problem créé");
 
         // nombre de fourmis
-        AntSystem sys = new AntSystem(p, nbFourmis);
+        for(int i=0;i<50;i++) {
+        	new Thread(new AntSystem(p, nbFourmis,bestLength,nbIterations)).start();
+        }
+        //AntSystem sys = new AntSystem(p, nbFourmis);
 
         System.out.println("Système créé");
 
         // unités de temps
-        sys.run(nbIterations);
+        //sys.run(nbIterations);
 
         System.out.println("Chemins testés");
 
