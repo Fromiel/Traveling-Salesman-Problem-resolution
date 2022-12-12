@@ -1,13 +1,13 @@
 import java.util.Vector;
 
-public class AntSystem
+public class AntSystem implements Runnable
 {
 
     private int nbAnts;
     private Vector<Ant> ants;
     private Problem problem;
-
-    private int bestLength; //Meilleur solution trouvée
+    private int nbitter;
+    public static volatile int bestLength; //Meilleur solution trouvée
     private Vector<Integer> bestSolution; //Chemin de la meilleur solution trouvée
 
     private int currentIteration;
@@ -24,6 +24,8 @@ public class AntSystem
             if (value < bestLength){
                 bestLength = value;
                 bestSolution = cities;
+                System.out.println(bestLength);
+                System.out.println(bestSolution);
             }
         }
     }
@@ -43,12 +45,25 @@ public class AntSystem
         pathCount = 0;
         currentIteration = 0;
     }
+    
+    public AntSystem(Problem problem, int nbAnts,int bestLength,int nbitter)
+    {
+        this.problem = problem;
+        this.nbAnts = nbAnts;
+        ants = new Vector<>(nbAnts);
+        for(int i = 0; i < nbAnts; i++)
+            ants.add(new Ant(problem));
+        this.nbitter = nbitter;
+        this.bestLength = bestLength;
+        pathCount = 0;
+        currentIteration = 0;
+    }
 
     // Méthode appelée pour effectuer la recherche du plus court chemin en fonction du nombre d'itérations passé en argument
     // n : nombre d'itération
-    public void run(int n)
+    public void run()
     {
-        for (currentIteration=0; currentIteration<n; currentIteration++){
+        for (currentIteration=0; currentIteration<nbitter; currentIteration++){
 
             // process each ant
             for (Ant ant : ants)
@@ -80,9 +95,11 @@ public class AntSystem
             //debug
             if (currentIteration%1000==0 && currentIteration != 0)
             {
-                System.out.println(bestLength);
-                System.out.println(bestSolution);
+                //System.out.println(bestLength);
+                //System.out.println(bestSolution);
             }
         }
     }
+    
+
 }
