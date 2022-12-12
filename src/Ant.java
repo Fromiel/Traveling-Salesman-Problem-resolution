@@ -1,6 +1,6 @@
 import java.util.Vector;
 
-public class Ant {
+public class Ant{
 
     private long currentArcSize; // Taille du chemin actuel de la fourmi
     private long currentArcPos; // Position sur l'arc actuel
@@ -181,5 +181,7 @@ public class Ant {
                 break;
         }
     }
+    
+
 
 }
