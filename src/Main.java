@@ -7,6 +7,7 @@ public class Main {
 
 		System.out.println("Debut du programme :");
 
+
 		// crée la fenêtre
 		/*
 		 * f = new JFrame("Interface graphique");
@@ -15,7 +16,9 @@ public class Main {
 		 */
 
 		// villes, borne sup, borne inf, coeff d'evaporation en %
-		int nbVilles = 10, nbIterations = 100000000, nbFourmis = 100, nbThreads = 10;
+		int nbVilles = 10, nbIterations = 10000000, nbFourmis = 100, nbThreads = 10;
+
+		MeasureTime m = new MeasureTime(nbThreads);
 
 		int bestLength = -1; // Meilleur solution trouvée
 
@@ -28,7 +31,7 @@ public class Main {
 
 		// nombre de fourmis
 		for (int i = 0; i < nbThreads; i++) {
-			new Thread(new AntSystem(p, nbFourmis, bestLength, nbIterations / nbThreads)).start();
+			new Thread(new AntSystem(p, nbFourmis, bestLength, nbIterations / nbThreads, m)).start();
 		}
 
 	}

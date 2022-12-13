@@ -8,6 +8,7 @@ public class AntSystem implements Runnable
     public static volatile int bestLength; //Meilleur solution trouvée
     private Vector<Integer> bestSolution; //Chemin de la meilleur solution trouvée
 
+    private MeasureTime m;
     private int currentIteration;
 
     //Méthode appelée lorsqu'une solution est trouvée, si elle est meilleur que la meilleur solution précédente, on remplace la meilleur solution par cette solution
@@ -30,8 +31,9 @@ public class AntSystem implements Runnable
 
     public int pathCount; //Nombre de chemins trouvés
     
-    public AntSystem(Problem problem, int nbAnts,int bestLength,int nbitter)
+    public AntSystem(Problem problem, int nbAnts,int bestLength,int nbitter, MeasureTime m)
     {
+        this.m = m;
         this.problem = problem;
         ants = new Vector<>(nbAnts);
         for(int i = 0; i < nbAnts; i++)
@@ -63,6 +65,7 @@ public class AntSystem implements Runnable
                     System.out.println("Solution optimale trouvée en "+currentIteration+" iterations");
                     System.out.println(bestLength);
                     System.out.println(bestSolution);
+                    m.displayTotalTime();
                     return;
                 }
 
@@ -82,6 +85,7 @@ public class AntSystem implements Runnable
                 //System.out.println(bestSolution);
             }
         }
+        m.displayTotalTime();
     }
     
 
