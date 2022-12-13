@@ -1,50 +1,10 @@
 
 public class Problem {
 
-    //Constructeur du probleme qui va initialiser les distances entre les villes et hardcoder une solution optimale, et initialiser les pheromones
-   /* public Problem(int nbCities, float borneMin, float borneMax, float evaporation)
-    {
-        this.nbCities = nbCities;
-        this.borneMin = borneMin;
-        this.borneMax = borneMax;
-        this.evaporation = evaporation;
-        this.distances = new int[nbCities][nbCities];
-        this.pheromones = new Pheromone[nbCities][nbCities];
-        for (int i = 0; i < nbCities; i++) {
-            for(int j = 0; j < nbCities; j++)
-            {
-                distances[i][j] = 0;
-                //pheromones[i][j] = borneMin;
-            }
-        }
-
-
-
-        //creer des distances aleatoires entre les ville
-        for (int i = 0; i < nbCities; i++) {
-            distances[i][i] = 0;
-            for(int j = i + 1; j < nbCities; j++)
-            {
-                distances[i][j] = (int) (Math.random() * 100) + 1;
-                distances[j][i] = distances[i][j];
-            }
-        }
-
-        // solution optimale
-        for (int i=0; i < nbCities; i++)
-            distances[i][(i+1)%nbCities] = distances[(i+1)%nbCities][i] = 1;
-
-        optimalLength = nbCities;
-    }*/
-
-
     //Constructeur de problem pour creer des villes de coordonnees aleatoires
     public Problem(int nbCities, float borneMin, float borneMax, float evaporation, int windowSizeX, int windowSizeY)
     {
         this.nbCities = nbCities;
-        this.borneMin = borneMin;
-        this.borneMax = borneMax;
-        this.evaporation = evaporation;
         this.distances = new int[nbCities][nbCities];
         this.pheromones = new Pheromone[nbCities][nbCities];
         this.cities = new City[nbCities];
@@ -96,15 +56,13 @@ public class Problem {
     public int nbCities;
 
     public City[] cities;
-    private float borneMax, borneMin;
-    private float evaporation;
 
     public int optimalLength;
 
 
     // arcs
-    public int distances[][];
+    public int[][] distances;
 
     // pheromones
-    public Pheromone pheromones[][];
+    public Pheromone[][] pheromones;
 }

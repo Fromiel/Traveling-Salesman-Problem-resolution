@@ -2,11 +2,9 @@ import java.util.Vector;
 
 public class AntSystem implements Runnable
 {
-
-    private int nbAnts;
-    private Vector<Ant> ants;
-    private Problem problem;
-    private int nbitter;
+    private final Vector<Ant> ants;
+    private final Problem problem;
+    private final int nbitter;
     public static volatile int bestLength; //Meilleur solution trouvée
     private Vector<Integer> bestSolution; //Chemin de la meilleur solution trouvée
 
@@ -31,30 +29,15 @@ public class AntSystem implements Runnable
     }
 
     public int pathCount; //Nombre de chemins trouvés
-
-    //Constructeur qui initialise AntSystem avec les données du problème et le nombre de fourmis
-    public AntSystem(Problem problem, int nbAnts)
-    {
-        this.problem = problem;
-        this.nbAnts = nbAnts;
-        ants = new Vector<>(nbAnts);
-        for(int i = 0; i < nbAnts; i++)
-            ants.add(new Ant(problem));
-
-        bestLength = -1;
-        pathCount = 0;
-        currentIteration = 0;
-    }
     
     public AntSystem(Problem problem, int nbAnts,int bestLength,int nbitter)
     {
         this.problem = problem;
-        this.nbAnts = nbAnts;
         ants = new Vector<>(nbAnts);
         for(int i = 0; i < nbAnts; i++)
             ants.add(new Ant(problem));
         this.nbitter = nbitter;
-        this.bestLength = bestLength;
+        AntSystem.bestLength = bestLength;
         pathCount = 0;
         currentIteration = 0;
     }
