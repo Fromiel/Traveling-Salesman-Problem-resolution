@@ -25,7 +25,7 @@ public class Main {
 		System.out.println("Problem créé");
 
 		// nombre de fourmis
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 10; i++) {
 			new Thread(new AntSystem(p, nbFourmis, bestLength, nbIterations)).start();
 		}
 		// AntSystem sys = new AntSystem(p, nbFourmis);

@@ -107,7 +107,7 @@ public class Ant{
         {
             if (citiesStillToVisit.get(i) == from)
                 continue;
-            pheromoneSize  += problem.pheromones[from][citiesStillToVisit.get(i)];
+            pheromoneSize  += problem.pheromones[from][citiesStillToVisit.get(i)].quantitePheromone;
         }
 
 
@@ -120,7 +120,7 @@ public class Ant{
             continue;
         }
 
-        tmpPheromones  += problem.pheromones[currentDestination][citiesStillToVisit.get(ii)];
+        tmpPheromones  += problem.pheromones[currentDestination][citiesStillToVisit.get(ii)].quantitePheromone;
 
         if (tmpPheromones > found)
             break;
