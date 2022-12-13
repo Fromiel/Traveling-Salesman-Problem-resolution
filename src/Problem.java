@@ -49,13 +49,12 @@ public class Problem {
 				pheromones[i][j].evaporate();
 			}
 
-		if (nbIterations == 1000) {
-			Main.f.getContentPane().add(new Interface(cities, pheromones));
-			Main.f.repaint();
-			nbIterations = 0;
-		}
-
-		nbIterations++;
+		/*
+		 * if (nbIterations == 1000) { Main.f.getContentPane().add(new Interface(cities,
+		 * pheromones)); Main.f.repaint(); nbIterations = 0; }
+		 * 
+		 * nbIterations++;
+		 */
 	}
 
 	public int nbCities;
