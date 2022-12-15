@@ -1,11 +1,39 @@
 import java.util.Vector;
 
+//Classe représentant une fourmi qui va voyager entre les villes
 public class Ant{
 
     private long currentArcSize; // Taille du chemin actuel de la fourmi
     private long currentArcPos; // Position sur l'arc actuel
     private int currentOrigin; // Origin de l'arc
     private int currentDestination; // Destination de l'arc
+
+    public enum StateEnum { SearchingPath, Returning, Nothing} //Type enum representant les differents etats de la fourmi (SearchingPath si elle recherche une ville, Returning si elle retourne au nid, Nothing si elle vient d'etre créée)
+
+    public StateEnum state; //Etat de la fourmi
+
+    public Vector<Integer> visitedCities; //Villes deja visitées
+    public Vector<Integer> citiesStillToVisit; //Villes à visiter
+
+    public int tmpVisitedLength; //Longueur du chemin actuel parcouru par la fourmi
+
+
+    //Constructeur de Ant
+    //Initialise la fourmi avec les données du problème et pose la fourmi sur la ville 0
+    public Ant(Problem problem)
+    {
+        tmpVisitedLength = 0;
+        currentArcPos = -1;
+        currentDestination = 0;
+        currentOrigin = 0;
+        state = StateEnum.Nothing;
+        this.problem = problem;
+        visitedCities = new Vector<>();
+        citiesStillToVisit = new Vector<>();
+
+        for (int i=0; i < problem.nbCities; i++)
+            citiesStillToVisit.add(i);
+    }
 
     private final Problem problem; //Données du probleme
 
@@ -62,6 +90,7 @@ public class Ant{
                     return;
                 }
 
+                //Si on n'a pas visité toutes les villes, on cherche la ville suivante à visiter
                 int dest = getNearCity(currentDestination);
                 currentOrigin = currentDestination;
                 currentDestination = dest;
@@ -69,13 +98,13 @@ public class Ant{
                 currentArcPos = 0;
             }
 
-            // si la fourmi revient au nid
+            // Si la fourmi revient au nid
             case Returning -> {
                 if (currentDestination == 0) {
                     // retourné au nid avec succès
                     problem.setPheromones(visitedCities.get(currentOrigin), visitedCities.get(currentDestination), tmpVisitedLength);
 
-                    // sauver le résultat, changer de fourmi
+                    // Sauvegarde le résultat dans l'exception
                     AntException e = new AntException();
                     e.ant = this;
                     e.state = AntException.antExceptionEnum.ToRegister;
@@ -105,7 +134,7 @@ public class Ant{
             pheromoneSize += problem.pheromones[from][integer].quantitePheromone;
         }
 
-
+        //On tire un nombre aleatoirement qui va avoir plus de probabilite d'etre grand si pheromoneSize est grand
         float found = (float)((int)(Math.random() * pheromoneSize*10)/10.0)  ;
         float tmpPheromones = 0;
         int ii = 0;
@@ -131,33 +160,6 @@ public class Ant{
         }
 
         return citiesStillToVisit.get(ii);
-    }
-
-    public enum StateEnum { SearchingPath, Returning, Nothing}
-
-    public StateEnum state;
-
-    public Vector<Integer> visitedCities;
-    public Vector<Integer> citiesStillToVisit;
-
-    public int tmpVisitedLength;
-
-
-    //Constructeur de Ant
-    //Initialise la fourmi avec les données du problème et pose la fourmi sur la ville 0
-    public Ant(Problem problem)
-    {
-        tmpVisitedLength = 0;
-        currentArcPos = -1;
-        currentDestination = 0;
-        currentOrigin = 0;
-        state = StateEnum.Nothing;
-        this.problem = problem;
-        visitedCities = new Vector<>();
-        citiesStillToVisit = new Vector<>();
-
-        for (int i=0; i < problem.nbCities; i++)
-            citiesStillToVisit.add(i);
     }
 
 

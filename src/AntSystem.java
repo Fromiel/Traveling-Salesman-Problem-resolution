@@ -1,15 +1,16 @@
 import java.util.Vector;
 
+//Classe utilisée sur un thread pour faire fonctionner l'algorithme de colonies fourmis
 public class AntSystem implements Runnable
 {
-    private final Vector<Ant> ants;
-    private final Problem problem;
-    private final int nbitter;
+    private final Vector<Ant> ants; //Liste des fourmis
+    private final Problem problem; //Problem
+    private final int nbitter; //Nombre d'iterations
     public static volatile int bestLength; //Meilleur solution trouvée
     private Vector<Integer> bestSolution; //Chemin de la meilleur solution trouvée
 
-    private MeasureTime m;
-    private int currentIteration;
+    private MeasureTime m; //Mesure le temps du programme
+    private int currentIteration; //L'iteration actuelle
 
     //Méthode appelée lorsqu'une solution est trouvée, si elle est meilleur que la meilleur solution précédente, on remplace la meilleur solution par cette solution
     private void notifySolution(int value, Vector<Integer> cities)
@@ -30,7 +31,8 @@ public class AntSystem implements Runnable
     }
 
     public int pathCount; //Nombre de chemins trouvés
-    
+
+    //Constructeur de AntSystem, initialise le problem, la liste de forumis, le nombre d'itérations et la mesure du temps
     public AntSystem(Problem problem, int nbAnts,int bestLength,int nbitter, MeasureTime m)
     {
         this.m = m;
@@ -60,7 +62,7 @@ public class AntSystem implements Runnable
                 if (e.state == AntException.antExceptionEnum.ToRegister)
                     notifySolution(e.ant.tmpVisitedLength, e.ant.visitedCities);
 
-                //Si on a trovue le chemin optimal
+                //Si on a trouve le chemin optimal
                 if(bestLength <= problem.optimalLength) {
                     System.out.println("Solution optimale trouvée en "+currentIteration+" iterations");
                     System.out.println(bestLength);
@@ -74,16 +76,10 @@ public class AntSystem implements Runnable
             }
 
 
-            // evaporate the pheromones
+            // Evapore les pheromones
             if (currentIteration % 20 == 0)
                 problem.evaporate();
 
-            //debug
-            if (currentIteration%100000==0 && currentIteration != 0)
-            {
-                //System.out.println(bestLength);
-                //System.out.println(bestSolution);
-            }
         }
         m.displayTotalTime();
     }

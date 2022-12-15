@@ -1,7 +1,25 @@
 
+//Classe représentant
 public class Problem {
 
+	public int nbCities; //Nombre de villes
+	public int nbIterations; //Nombre d'iterations
+
+	public City[] cities; //Villes qu'on veut parcourir de maniere optimale
+
+	public int optimalLength; //Borne inferieure de la taille minimale qu'on peut trouver pour un chemin
+
+	// arcs
+	public int[][] distances; //Matrice representant les distances entre les villes
+	public Pheromone[][] pheromones; //Matrice représentant les pheromones entre les villes (pheromones[i][j] = pheromones[j][i] represente les pheromones entre la ville cities[i] et cities[j])
+
 	// Constructeur de problem pour creer des villes de coordonnees aleatoires
+	// nbCities : nombre de villes du probleme
+	// borneMin : minimum de pheromones entre deux villes
+	// borneMax : maximum de pheromones entre deux villes
+	// evaporation : taux d'evaporation des pheromones entre les villes
+	// windowSizeX : coordonnee maximale des villes en x
+	// windowSizeY : coordonnee maximale des villes en y
 	public Problem(int nbCities, float borneMin, float borneMax, float evaporation, int windowSizeX, int windowSizeY) {
 		this.nbCities = nbCities;
 		this.distances = new int[nbCities][nbCities];
@@ -14,10 +32,12 @@ public class Problem {
 		Pheromone.borneMin = borneMin;
 		Pheromone.evaporation = evaporation;
 
+		//On cree les villes
 		for (int i = 0; i < nbCities; i++) {
 			cities[i] = new City(windowSizeX, windowSizeY);
 		}
 
+		//On initialise les pheromones et les distances
 		for (int i = 0; i < nbCities; i++) {
 			distances[i][i] = 0;
 			for (int j = i; j < nbCities; j++) {
@@ -57,16 +77,4 @@ public class Problem {
 		 */
 	}
 
-	public int nbCities;
-	public int nbIterations;
-
-	public City[] cities;
-
-	public int optimalLength;
-
-	// arcs
-	public int[][] distances;
-
-	// pheromones
-	public Pheromone[][] pheromones;
 }

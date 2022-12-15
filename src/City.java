@@ -1,6 +1,7 @@
+//Classe représentant une ville
 public class City {
-    public int x;
-    public int y;
+    public int x; //Coordonnee x de la ville
+    public int y; //Coordonnee y de la ville
 
     //Constructeur qui met des coordonnees aleatoire entre 0 et maxX-1 et 0 et maxY - 1 pour x et y respectivement
     public City(int maxX, int maxY)
